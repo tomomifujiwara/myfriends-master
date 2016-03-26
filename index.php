@@ -2,13 +2,23 @@
     define('PDO_DSN', 'mysql:dbname=myfriends;host=localhost');
     define('DB_USERNAME', 'root');
     define('DB_PASSWORD', '');
+
     $dbh = new PDO(PDO_DSN,DB_USERNAME,DB_PASSWORD);
     $dbh->query('SET NAMES utf8');
-    $sql = 'SELECT * FROM areas';
+
+    //件名と人数が正しい登録表記で出る為のもの、初期は人数が全て0になっている
+    $sql = 'SELECT `areas`.`area_id`, `areas`.`area_name`,'; 
+    $sql .= ' COUNT(`friends`.`friend_id`) AS friends_cnt';
+    $sql .= ' FROM `areas` LEFT JOIN `friends`';
+    $sql .= ' ON `areas`.`area_id` = `friends`.`area_id`';
+    $sql .= ' GROUP BY`areas`.`area_id`'; 
+
     $stmt = $dbh->prepare($sql);
     $stmt->execute();
+    
     // 取得データを格納するための配列を用意
     $areas = array();
+    
     while(1) {
         // データを取得
         $rec = $stmt->fetch(PDO::FETCH_ASSOC);
