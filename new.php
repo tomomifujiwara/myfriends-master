@@ -5,6 +5,7 @@
     $dbh = new PDO(PDO_DSN,DB_USERNAME,DB_PASSWORD);
     $dbh->query('SET NAMES utf8');
     //POST 送信された情報を取得
+    
     // POST送信されたら、友達データを追加
     if (isset($_POST) && !empty($_POST)){
       var_dump($_POST['name']);
